@@ -334,7 +334,7 @@ def check_left_or_right(left_or_right) :
             ######### 已經觸底的也不能移動了，不然是作弊
             for block in block_list:
                 for temp in temp_list :
-                    if temp[2] == block[2] and (temp[1] + num == block[1]) and check_stockpile():
+                    if (temp[2] == block[2] and (temp[1] + num == block[1])) or not check_stockpile():
                         return False
                     
                     
