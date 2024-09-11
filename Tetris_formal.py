@@ -28,156 +28,364 @@ block_width = 40
 
 
 ######### 記錄各種方塊的上下左右
-def T_block(color, x, y):
+class T_block():
+    
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+        
+    def get_direction(self, color):
+    
 
-    up = [[color, x, y], [color, x + 40, y], [color, x - 40, y], [color, x, y - 40]]
-    down = [[color, x, y], [color, x + 40, y], [color, x - 40, y], [color, x, y + 40]]
-    right = [[color, x, y], [color, x, y - 40], [color, x, y + 40], [color, x + 40, y]]
-    left = [[color, x, y], [color, x, y - 40], [color, x, y + 40], [color, x - 40, y]]
+        up = [[color, self.x, self.y], [color, self.x + 40, self.y], [color, self.x - 40, self.y], [color, self.x, self.y - 40]]
+        down = [[color, self.x, self.y], [color, self.x + 40, self.y], [color, self.x - 40, self.y], [color, self.x, self.y + 40]]
+        right = [[color, self.x, self.y], [color, self.x, self.y - 40], [color, self.x, self.y + 40], [color, self.x + 40, self.y]]
+        left = [[color, self.x, self.y], [color, self.x, self.y - 40], [color, self.x, self.y + 40], [color, self.x - 40, self.y]]
 
-    return up, down, right, left
+        return up, down, right, left
+
+    
+    def get_color(self):
+        num = random.randint(1,2)
+        
+        if num == 1 :
+            color = (100,90,200)
+        
+        elif num == 2 :
+            
+            color = pygame.image.load('/Users/coolguy/Documents/picture_for_T.jpg')
+            color = pygame.transform.scale(color,(40,40))
+            color.blit(color,(self.x, self.y))
+            
+       
+        return color
+    
 
 
-def L_block(color, x, y):
+class L_block():
+    
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+    
+    
+    def get_direction(self, color):
+        up = [
+            [color, self.x, self.y],
+            [color, self.x + 40, self.y],
+            [color, self.x - 40, self.y],
+            [color, self.x + 40, self.y - 40],
+        ]
+        down = [
+            [color, self.x, self.y],
+            [color, self.x + 40, self.y],
+            [color, self.x - 40, self.y],
+            [color, self.x - 40, self.y + 40],
+        ]
+        right = [
+            [color, self.x, self.y],
+            [color, self.x, self.y - 40],
+            [color, self.x, self.y + 40],
+            [color, self.x + 40, self.y + 40],
+        ]
+        left = [
+            [color, self.x, self.y],
+            [color, self.x, self.y - 40],
+            [color, self.x, self.y + 40],
+            [color, self.x - 40, self.y - 40],
+        ]
+        return up, down, left, right
+    
+    
+    def get_color(self):
+        num = random.randint(1,2)
+        
+        if num == 1 :
+            color = (70,90,120)
+        
+        elif num == 2 :
+            
+            color = pygame.image.load('/Users/coolguy/Documents/picture_for_L.jpg')
+            color = pygame.transform.scale(color,(40,40))
+            color.blit(color,(self.x, self.y))
+            
+       
+        return color
+    
+   
+        
+        
+            
+            
+        
 
-    up = [
-        [color, x, y],
-        [color, x + 40, y],
-        [color, x - 40, y],
-        [color, x + 40, y - 40],
+
+class J_block():
+
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+    
+    
+    def get_direction(self, color):
+        
+        
+        up = [
+        [color, self.x, self.y],
+        [color, self.x + 40, self.y],
+        [color, self.x - 40, self.y],
+        [color, self.x - 40, self.y - 40],
     ]
-    down = [
-        [color, x, y],
-        [color, x + 40, y],
-        [color, x - 40, y],
-        [color, x - 40, y + 40],
-    ]
-    right = [
-        [color, x, y],
-        [color, x, y - 40],
-        [color, x, y + 40],
-        [color, x + 40, y + 40],
-    ]
-    left = [
-        [color, x, y],
-        [color, x, y - 40],
-        [color, x, y + 40],
-        [color, x - 40, y - 40],
-    ]
+        down = [
+            [color, self.x, self.y],
+            [color, self.x + 40, self.y],
+            [color, self.x - 40, self.y],
+            [color, self.x + 40, self.y + 40],
+        ]
+        right = [
+            [color, self.x, self.y],
+            [color, self.x, self.y - 40],
+            [color, self.x, self.y + 40],
+            [color, self.x + 40, self.y - 40],
+        ]
+        left = [
+            [color, self.x, self.y],
+            [color, self.x, self.y - 40],
+            [color, self.x, self.y + 40],
+            [color, self.x - 40, self.y + 40],
+        ]
 
-    return up, down, right, left
-
-
-def J_block(color, x, y):
-
-    up = [
-        [color, x, y],
-        [color, x + 40, y],
-        [color, x - 40, y],
-        [color, x - 40, y - 40],
-    ]
-    down = [
-        [color, x, y],
-        [color, x + 40, y],
-        [color, x - 40, y],
-        [color, x + 40, y + 40],
-    ]
-    right = [
-        [color, x, y],
-        [color, x, y - 40],
-        [color, x, y + 40],
-        [color, x + 40, y - 40],
-    ]
-    left = [
-        [color, x, y],
-        [color, x, y - 40],
-        [color, x, y + 40],
-        [color, x - 40, y + 40],
-    ]
-
-    return up, down, right, left
+        return up, down, right, left
+        
+        
+    def get_color(self):
+        num = random.randint(1,2)
+        
+        if num == 1 :
+            color = (20,90,90)
+        
+        elif num == 2 :
+            
+            color = pygame.image.load('/Users/coolguy/Documents/租房照片二.jpg')
+            color = pygame.transform.scale(color,(40,40))
+            color.blit(color,(self.x, self.y))
+            
+       
+        return color
+    
 
 
-def I_block(color, x, y):
+class I_block():
+    
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+    
+    
+    def get_direction(self, color):
+       
+        up = [[color, self.x, self.y], [color, self.x, self.y - 40], [color, self.x, self.y + 40], [color, self.x, self.y + 80]]
+        down = up
+        right = [[color, self.x, self.y], [color, self.x - 40, self.y], [color, self.x + 40, self.y], [color, self.x + 80, self.y]]
+        left = right
 
-    up = [[color, x, y], [color, x, y - 40], [color, x, y + 40], [color, x, y + 80]]
-    down = up
-    right = [[color, x, y], [color, x - 40, y], [color, x + 40, y], [color, x + 80, y]]
-    left = right
+        return up, down, right, left
+    
+    
+    def get_color(self):
+        num = random.randint(1,2)
+        
+        if num == 1 :
+            color = (70,90,120)
+        
+        elif num == 2 :
+            
+            color = pygame.image.load('/Users/coolguy/Documents/租房照片一.jpg')
+            color = pygame.transform.scale(color,(40,40))
+            color.blit(color,(self.x, self.y))
+            
+       
+        return color
+    
 
-    return up, down, right, left
-
-
-def O_block(color, x, y):
-
-    up = [
-        [color, x, y],
-        [color, x + 40, y],
-        [color, x, y + 40],
-        [color, x + 40, y + 40],
-    ]
-    down = up
-    right = up
-    left = up
-
-    return up, down, right, left
-
-
-def S_block(color, x, y):
-
-    up = [
-        [color, x, y],
-        [color, x - 40, y],
-        [color, x, y - 40],
-        [color, x + 40, y - 40],
-    ]
-    down = up
-    right = [
-        [color, x, y],
-        [color, x + 40, y],
-        [color, x, y - 40],
-        [color, x + 40, y + 40],
-    ]
-    left = right
-
-    return up, down, right, left
+    
 
 
-def Z_block(color, x, y):
+class O_block():
+    
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+    
+    
+    def get_direction(self, color):
+       
+        up = [
+        [color, self.x, self.y],
+        [color, self.x + 40, self.y],
+        [color, self.x, self.y + 40],
+        [color, self.x + 40, self.y + 40],
+        ]
+        down = up
+        right = up
+        left = up
 
-    up = [
-        [color, x, y],
-        [color, x + 40, y],
-        [color, x, y - 40],
-        [color, x - 40, y - 40],
-    ]
-    down = up
-    right = [
-        [color, x, y],
-        [color, x - 40, y],
-        [color, x, y - 40],
-        [color, x - 40, y + 40],
-    ]
-    left = right
+        return up, down, right, left
+        
+    
+    def get_color(self):
+        num = random.randint(1,2)
+        
+        if num == 1 :
+            color = (170,90,220)
+        
+        elif num == 2 :
+            
+            color = pygame.image.load('/Users/coolguy/Documents/租房照片四.jpg')
+            color = pygame.transform.scale(color,(40,40))
+            color.blit(color,(self.x, self.y))
+            
+       
+        return color
 
-    return up, down, right, left
+    
 
+
+class S_block():
+
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+    
+    
+    def get_direction(self, color):
+       
+        up = [
+        [color, self.x, self.y],
+        [color, self.x - 40, self.y],
+        [color, self.x, self.y - 40],
+        [color, self.x + 40, self.y - 40],
+        ]
+        down = up
+        right = [
+            [color, self.x, self.y ],
+            [color, self.x + 40, self.y ],
+            [color, self.x, self.y  - 40],
+            [color, self.x + 40, self.y  + 40],
+        ]
+        left = right
+
+        return up, down, right, left
+        
+    
+    def get_color(self):
+        num = random.randint(1,2)
+        
+        if num == 1 :
+            color = (70,90,120)
+        
+        elif num == 2 :
+            
+            color = pygame.image.load('/Users/coolguy/Documents/租房照片五.jpg')
+            color = pygame.transform.scale(color,(40,40))
+            color.blit(color,(self.x, self.y))
+            
+       
+        return color
+    
+
+
+class Z_block():
+
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+    
+    
+    def get_direction(self, color):
+       
+        up = [
+        [color, self.x, self.y],
+        [color, self.x + 40, self.y],
+        [color, self.x, self.y - 40],
+        [color, self.x - 40, self.y - 40],
+        ]
+        down = up
+        right = [
+            [color, self.x, self.y],
+            [color, self.x - 40, self.y],
+            [color, self.x, self.y - 40],
+            [color, self.x - 40, self.y + 40],
+        ]
+        left = right
+
+        return up, down, right, left
+
+        
+    
+    def get_color(self):
+        num = random.randint(1,2)
+        
+        if num == 1 :
+            color = (20,220,120)
+        
+        elif num == 2 :
+            
+            color = pygame.image.load('/Users/coolguy/Documents/租房照片二.jpg')
+            color = pygame.transform.scale(color,(40,40))
+            color.blit(color,(self.x, self.y))
+            
+       
+        return color
+    
 
 ######### 初始化資料
 def get_inital_value():
     global block_figure
 
+
     ######### 初始資料，這是方塊剛生成時會用到的
-    color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
     x = random.randrange(0, 361, block_width)
     y = 0
+    
+    block_figure = random.choice(["T", "L", "I", "J", "O", "S", "Z"])
+  
+    
+    if block_figure == "T" :
+        block = T_block(x,y)
+        
+    if block_figure == "L" :
+        block = L_block(x,y)
+        
+    if block_figure == "I" :
+        block = I_block(x,y)
+        
+    if block_figure == "J" :
+        block = J_block(x,y)
+        
+    if block_figure == "O" :
+        block = O_block(x,y)
+
+    if block_figure == "S" :
+        block = S_block(x,y)
+    
+    if block_figure == "Z" :
+        block = Z_block(x,y)
+    
+    
+    
+    
+    color = block.get_color()
+
+        
+   
 
     """
     先隨機分配要生成哪一種
     再把值傳進去病得出上下左右的真正值
     之後再選擇要哪一種
     """
-    block_figure = random.choice(["T", "L", "I", "J", "O", "S", "Z"])
+    
     up, down, right, left = renew_data(color, x, y)
     temp_list = random.choice([up, down, left, right])
 
@@ -207,26 +415,28 @@ def get_changing_value(temp_list):
 def renew_data(color, x, y):
 
     if block_figure == "T":
-        up, down, right, left = T_block(color, x, y)
+        block = T_block(x, y)
 
     if block_figure == "L":
-        up, down, right, left = L_block(color, x, y)
-
+        block = L_block(x, y)
+        
     if block_figure == "I":
-        up, down, right, left = I_block(color, x, y)
-
+        block = I_block(x, y)
+        
     if block_figure == "J":
-        up, down, right, left = J_block(color, x, y)
-
+        block = J_block(x, y)
+        
     if block_figure == "O":
-        up, down, right, left = O_block(color, x, y)
+        block = O_block(x, y)
 
     if block_figure == "S":
-        up, down, right, left = S_block(color, x, y)
-
+        block = S_block(x, y)
+        
     if block_figure == "Z":
-        up, down, right, left = Z_block(color, x, y)
+        block = Z_block(x, y)
 
+    up, down, right, left = block.get_direction(color)
+    
     return up, down, right, left
 
 
@@ -319,16 +529,19 @@ class Rotate:
         return self.temp_list
 
 
-######### 畫出在底部的所有方塊
-def draw_blocks():
 
-    for block in block_list:
-        pygame.draw.rect(
-            background,
-            block[0],
-            pygame.Rect(block[1], block[2], block_width, block_width),
-        )
+######### 畫出在底部的所有方塊或正在移動的方塊
+def draw_blocks(block):
 
+        if isinstance( block[0],tuple) :
+            pygame.draw.rect(
+                background,
+                block[0],
+                pygame.Rect(block[1], block[2], block_width, block_width),
+            )
+
+        else :
+            background.blit(block[0],(block[1],block[2]))
 
 ######### 檢查是否在底部或碰到其他方塊
 def check_stockpile():
@@ -624,7 +837,7 @@ while True:
         ######### 用flag來確認是否要更新畫面
         if flag:
             background_image = pygame.image.load(
-                "/Users/coolguy/Documents/cropped_background.jpeg"
+                "/Users/coolguy/Documents/background.jpeg"
             )
             background.blit(background_image, (0, 0))  # 畫背景 黑色
             draw_lines()  # 畫分隔的實線
@@ -634,11 +847,12 @@ while True:
             一個一個畫完後再更新畫面
             """
             for temp in temp_list:
-                head = pygame.Rect(temp[1], temp[2], block_width, block_width)
-                pygame.draw.rect(background, temp[0], head)
-
+                draw_blocks(temp)
+                    
             remove_and_drop()
-            draw_blocks()
+            
+            for block in block_list :
+                draw_blocks(block)
 
             ######### 輸了也需要顯示畫面
     pygame.display.flip()
