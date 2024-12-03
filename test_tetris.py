@@ -148,11 +148,15 @@ class MainTest(unittest.TestCase):
     
     
     def test_get_losing_scene(self):
-        pass
+        tetris_formal.get_losing_scene = Mock()
+        tetris_formal.get_losing_scene()
+        tetris_formal.get_losing_scene.assert_called()
     
     
     def test_check_if_player_lose(self):
-        pass
+        tetris_formal.block_list = copy.deepcopy(self.stockpiled_T_block)
+        
+        self.assertTrue(tetris_formal.check_if_player_lose())
 
 
 if __name__ == '__main__':

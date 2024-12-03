@@ -1,8 +1,11 @@
 """This is the code relating to Tetris with the blocks displaying pictures or colors. """
 
+# pylint: disable=no-member
+
 import sys
 import random
 import pygame
+import relative_path
 
 
 ######### 初始化pygame
@@ -28,8 +31,14 @@ SCREEN_WIDTH = 360  # 因為方塊的x值在左上角，所以方塊到最右方
 
 BLOCK_WIDTH = 40
 
+######### 這是用來更新FPS的
+time = 0  # 順便配合幀數 # pylint: disable = invalid-name # This is a mutable variable
+fps_speed = 100  # pylint: disable = invalid-name # This is a mutable variable
 
-class InitializeData:  # pylint: disable=too-few-public-methods # 因為這是用於繼承的，重點不是他的fnc
+score = 0  # pylint: disable = invalid-name # This is a mutable variable
+
+
+class BlockBase:  # pylint: disable=too-few-public-methods # 因為這是用於繼承的，重點不是他的fnc
     """各個方塊的初始條件"""
 
     def __init__(self, x, y):
@@ -52,7 +61,7 @@ class InitializeData:  # pylint: disable=too-few-public-methods # 因為這是�
         return color
 
 
-class TBlock(InitializeData):
+class TBlock(BlockBase):
     """上下左右的紀錄是為了之後旋轉時，能辨別它的上下左右的各個方塊的所在位置的座標是什麼。"""
 
     def get_direction(self, color):
@@ -89,13 +98,13 @@ class TBlock(InitializeData):
         """隨機選擇要顏色還是圖片"""
 
         color = self.color_or_picture(
-            (100, 90, 200), "/Users/coolguy/Documents/picture_for_T.jpg"
+            (100, 90, 200), relative_path.block_picture_path[0]
         )
 
         return color
 
 
-class LBlock(InitializeData):
+class LBlock(BlockBase):
     """上下左右的紀錄是為了之後旋轉時，能辨別它的上下左右的各個方塊的所在位置的座標是什麼。"""
 
     def get_direction(self, color):
@@ -131,13 +140,13 @@ class LBlock(InitializeData):
         """隨機選擇要顏色還是圖片"""
 
         color = self.color_or_picture(
-            (70, 90, 120), "/Users/coolguy/Documents/picture_for_L.jpg"
+            (70, 90, 120), relative_path.block_picture_path[1]
         )
 
         return color
 
 
-class JBlock(InitializeData):
+class JBlock(BlockBase):
     """上下左右的紀錄是為了之後旋轉時，能辨別它的上下左右的各個方塊的所在位置的座標是什麼。"""
 
     def get_direction(self, color):
@@ -174,13 +183,13 @@ class JBlock(InitializeData):
         """隨機選擇要顏色還是圖片"""
 
         color = self.color_or_picture(
-            (20, 90, 90), "/Users/coolguy/Documents/租房照片二.jpg"
+            (20, 90, 90), relative_path.block_picture_path[2]
         )
 
         return color
 
 
-class IBlock(InitializeData):
+class IBlock(BlockBase):
     """上下左右的紀錄是為了之後旋轉時，能辨別它的上下左右的各個方塊的所在位置的座標是什麼。"""
 
     def get_direction(self, color):
@@ -207,13 +216,13 @@ class IBlock(InitializeData):
         """隨機選擇要顏色還是圖片"""
 
         color = self.color_or_picture(
-            (70, 90, 120), "/Users/coolguy/Documents/租房照片一.jpg"
+            (70, 90, 120), relative_path.block_picture_path[3]
         )
 
         return color
 
 
-class OBlock(InitializeData):
+class OBlock(BlockBase):
     """上下左右的紀錄是為了之後旋轉時，能辨別它的上下左右的各個方塊的所在位置的座標是什麼。"""
 
     def get_direction(self, color):
@@ -235,13 +244,13 @@ class OBlock(InitializeData):
         """隨機選擇要顏色還是圖片"""
 
         color = self.color_or_picture(
-            (170, 90, 220), "/Users/coolguy/Documents/租房照片四.jpg"
+            (170, 90, 220), relative_path.block_picture_path[4]
         )
 
         return color
 
 
-class SBlock(InitializeData):
+class SBlock(BlockBase):
     """上下左右的紀錄是為了之後旋轉時，能辨別它的上下左右的各個方塊的所在位置的座標是什麼。"""
 
     def get_direction(self, color):
@@ -268,13 +277,13 @@ class SBlock(InitializeData):
         """隨機選擇要顏色還是圖片"""
 
         color = self.color_or_picture(
-            (70, 90, 120), "/Users/coolguy/Documents/租房照片五.jpg"
+            (70, 90, 120), relative_path.block_picture_path[5]
         )
 
         return color
 
 
-class ZBlock(InitializeData):
+class ZBlock(BlockBase):
     """上下左右的紀錄是為了之後旋轉時，能辨別它的上下左右的各個方塊的所在位置的座標是什麼。"""
 
     def get_direction(self, color):
@@ -301,7 +310,7 @@ class ZBlock(InitializeData):
         """隨機選擇要顏色還是圖片"""
 
         color = self.color_or_picture(
-            (20, 220, 120), "/Users/coolguy/Documents/租房照片二.jpg"
+            (20, 220, 120), relative_path.block_picture_path[6]
         )
 
         return color
@@ -324,26 +333,27 @@ def get_inital_value():
 
     block_figure = random.choice(["T", "L", "I", "J", "O", "S", "Z"])
 
-    if block_figure == "T":
-        block_attributes = TBlock(x, y)
+    match block_figure:
+        case "T":
+            block_attributes = TBlock(x, y)
 
-    if block_figure == "L":
-        block_attributes = LBlock(x, y)
+        case "L":
+            block_attributes = LBlock(x, y)
 
-    if block_figure == "I":
-        block_attributes = IBlock(x, y)
+        case "I":
+            block_attributes = IBlock(x, y)
 
-    if block_figure == "J":
-        block_attributes = JBlock(x, y)
+        case "J":
+            block_attributes = JBlock(x, y)
 
-    if block_figure == "O":
-        block_attributes = OBlock(x, y)
+        case "O":
+            block_attributes = OBlock(x, y)
 
-    if block_figure == "S":
-        block_attributes = SBlock(x, y)
+        case "S":
+            block_attributes = SBlock(x, y)
 
-    if block_figure == "Z":
-        block_attributes = ZBlock(x, y)
+        case "Z":
+            block_attributes = ZBlock(x, y)
 
     color = block_attributes.get_color()
 
@@ -358,7 +368,8 @@ def get_inital_value():
 
 
 def get_changing_value(moving_list):
-    """
+    """得到移動方塊的上下左右值
+
     已經生成的方塊，在要更換方向（變左遍右等）需要更新color,x,y,temp_list
     初始資料，這是方塊剛生成時會用到的這樣下面的self.up......才會依據現在的x,y值進行判定
     Rotate在判定時才知道self.up......是啥
@@ -376,26 +387,28 @@ def renew_data(color, x, y):
     """用來更新上下左右的地方"""
 
     new_block = None
-    if block_figure == "T":
-        new_block = TBlock(x, y)
 
-    if block_figure == "L":
-        new_block = LBlock(x, y)
+    match block_figure:
+        case "T":
+            new_block = TBlock(x, y)
 
-    if block_figure == "I":
-        new_block = IBlock(x, y)
+        case "L":
+            new_block = LBlock(x, y)
 
-    if block_figure == "J":
-        new_block = JBlock(x, y)
+        case "I":
+            new_block = IBlock(x, y)
 
-    if block_figure == "O":
-        new_block = OBlock(x, y)
+        case "J":
+            new_block = JBlock(x, y)
 
-    if block_figure == "S":
-        new_block = SBlock(x, y)
+        case "O":
+            new_block = OBlock(x, y)
 
-    if block_figure == "Z":
-        new_block = ZBlock(x, y)
+        case "S":
+            new_block = SBlock(x, y)
+
+        case "Z":
+            new_block = ZBlock(x, y)
 
     up, down, right, left = new_block.get_direction(color)
 
@@ -528,7 +541,7 @@ def check_stockpile(local_temp_list):
         return True
 
     else:
-        return True
+        return True  ######### 這裡 return True是為了讓剛開始block_list沒有值時方塊還能下墜（move_down fnc）
 
 
 def check_left_or_right(left_or_right, local_temp_list):
@@ -555,10 +568,7 @@ def check_left_or_right(left_or_right, local_temp_list):
                 ) or not check_stockpile(local_temp_list):
                     return False
 
-        return True  # 不能用else，因為一個不成立的話就直接跳回去，如果全檢查完，if都不成立的話，再往下跑就可以return True
-
-    else:
-        return True
+    return True
 
 
 def remove_and_drop():
@@ -590,10 +600,8 @@ def remove_and_drop():
                     rest_of_blocks[2] += BLOCK_WIDTH
 
             block_list = cobied_list
-            pop_list.clear()
 
-        else:
-            pop_list.clear()
+        pop_list.clear()
 
 
 def move_left_or_right(left_or_right, local_temp_list):
@@ -662,34 +670,34 @@ def press_which_side():  # pylint: disable = inconsistent-return-statements
     for event in pygame.event.get():
 
         ######### 如果點視窗的叉叉
-        if event.type == pygame.QUIT:  # pylint: disable=no-member
+        if event.type == pygame.QUIT:  # -member
 
             ######### 離開pygame
-            pygame.quit()  # pylint: disable=no-member
+            pygame.quit()  # -member
 
             ######### 關閉程式
             sys.exit()
 
-        if event.type == pygame.KEYDOWN:  # pylint: disable=no-member
+        if event.type == pygame.KEYDOWN:  # -member
 
-            if event.key == pygame.K_LEFT:  # pylint: disable=no-member
+            if event.key == pygame.K_LEFT:  # -member
 
                 return "left"
 
-            if event.key == pygame.K_RIGHT:  # pylint: disable=no-member
+            if event.key == pygame.K_RIGHT:  # -member
 
                 return "right"
 
-            if event.key == pygame.K_DOWN:  # pylint: disable=no-member
+            if event.key == pygame.K_DOWN:  # -member
 
                 return "down"
 
             ######### 旋轉
-            if event.key == pygame.K_1:  # pylint: disable=no-member
+            if event.key == pygame.K_1:  # -member
 
                 return "rotate clockwise"
 
-            if event.key == pygame.K_2:  # pylint: disable=no-member
+            if event.key == pygame.K_2:  # -member
 
                 return "rotate counterclockwise"
 
@@ -710,7 +718,12 @@ def get_losing_scene(losing_time):
     font_3 = pygame.font.Font(None, 30)
 
     ######### 渲染文字 (文字內容, 是否平滑, 顏色)
-    lose_surface = font_1.render("You lose", True, (255, 255, 255))  # 白色
+    WHITE_COLOR = (  # pylint: disable = invalid-name # This is a not mutable
+        255,
+        255,
+        255,
+    )
+    lose_surface = font_1.render("You lose", True, WHITE_COLOR)  # 白色
     score_surface = font_2.render(f"Elimination = {score} blocks", True, (200, 50, 50))
     time_surface = font_3.render(
         f"Survive time = {survive_time} seconds", True, (200, 50, 50)
@@ -747,12 +760,6 @@ if __name__ == "__main__":
     #########一開始要先設定temp_list
     temp_list = get_inital_value()
 
-    ######### 這是用來更新FPS的
-    TIME = 0  # 順便配合幀數
-    FPS_SPEED = 100
-
-    score = 0  # pylint: disable = invalid-name # This is a mutable variable
-
     while True:
 
         SIDE = press_which_side()  # 決定上下左右，window_close()包含在裡頭
@@ -760,20 +767,20 @@ if __name__ == "__main__":
         ######### 檢查有沒有輸
 
         if not check_if_player_lose():
-            get_losing_scene(TIME)
+            get_losing_scene(time)
 
         ######### 沒輸的話的正常功能
         else:
 
             ######### FPS會增大（每一分鐘FPS增加20）
-            TIME += 1
+            time += 1
 
-            if temp_list[0][2] == 0 and TIME % 3600 == 0:
-                if FPS_SPEED <= 500:
-                    FPS_SPEED += 20
+            if temp_list[0][2] == 0 and time % 3600 == 0:
+                if fps_speed <= 500:
+                    fps_speed += 20
 
             ######### It should be called once per frame
-            FPS.tick(FPS_SPEED)
+            FPS.tick(fps_speed)
 
             ######## 根本不需要多個幾幀再顯示，人眼根本看不出區別
             if SIDE is not None:
@@ -801,14 +808,14 @@ if __name__ == "__main__":
 
             ######### 這裡不加else:flag = False，因為在大部分情況下，上面的就顯示fkag = False，所以下面有需要才會是flag = True
 
-            if TIME % 60 == 0:
+            if time % 60 == 0:
                 temp_list = move_down(temp_list)
                 flag = True  # pylint: disable = invalid-name
 
             ######### 用flag來確認是否要更新畫面
             if flag:
                 background_image = pygame.image.load(
-                    "/Users/coolguy/Documents/background.jpeg"
+                    relative_path.background_picture_path
                 )
                 background.blit(background_image, (0, 0))  # 畫背景 黑色
                 draw_lines()  # 畫分隔的實線
