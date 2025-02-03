@@ -2,6 +2,7 @@
 This is the code relating to Tetris with the blocks displaying pictures or colors. 
 """
 
+import asyncio
 import sys
 import random
 import pygame
@@ -850,79 +851,85 @@ fps_speed = 100
 
 score = 0
 
-while True:
+async def main():
+    global TIME
 
-    """
-    決定上下左右
-    window_close()包含在裡頭
-    """
-    SIDE = press_which_side()
+    while True:
 
-    ######### 檢查有沒有輸
+        """
+        決定上下左右
+        window_close()包含在裡頭
+        """
+        SIDE = press_which_side()
 
-    if not check_if_player_lose():
-        get_losing_scene()
+        ######### 檢查有沒有輸
 
-    ######### 沒輸的話的正常功能
-    else:
+        if not check_if_player_lose():
+            get_losing_scene()
 
-        ######### FPS會增大（每一分鐘FPS增加20）
-        TIME += 1
-
-        if temp_list[0][2] == 0 and TIME % 3600 == 0:
-            if fps_speed <= 500:
-                fps_speed += 20
-
-        ######### It should be called once per frame
-        FPS.tick(fps_speed)
-
-        ######## 根本不需要多個幾幀再顯示，人眼根本看不出區別
-        if SIDE is not None:
-            FLAG = True
-
-            if SIDE == "left" or SIDE == "right":
-                move_left_or_right(SIDE)
-
-            elif SIDE == "down":
-
-                SIDE = move_down()
-
-            elif SIDE == "rotate clockwise":
-                rotate = Rotate(temp_list)
-                temp_list = rotate.clockwise()
-
-            elif SIDE == "rotate counterclockwise":
-                rotate = Rotate(temp_list)
-                temp_list = rotate.counterclockwise()
-
+        ######### 沒輸的話的正常功能
         else:
-            FLAG = False
 
-        ######### 這裡不加else:FLAG = False，因為在大部分情況下，上面的就顯示FLAG = False，所以下面有需要才會是FLAG = True
+            ######### FPS會增大（每一分鐘FPS增加20）
+            TIME += 1
 
-        if TIME % 60 == 0:
-            move_down()
-            FLAG = True
+            if temp_list[0][2] == 0 and TIME % 3600 == 0:
+                if fps_speed <= 500:
+                    fps_speed += 20
 
-        ######### 用FLAG來確認是否要更新畫面
-        if FLAG:
-            background_image = pygame.image.load(
-                "/Users/coolguy/Documents/background.jpeg"
-            )
-            background.blit(background_image, (0, 0))  # 畫背景 黑色
-            draw_lines()  # 畫分隔的實線
+            ######### It should be called once per frame
+            FPS.tick(fps_speed)
 
-            """
-            因為temp_list裡有數個值
-            一個一個畫完後再更新畫面
-            """
-            for temp in temp_list:
-                draw_blocks(temp)
+            ######## 根本不需要多個幾幀再顯示，人眼根本看不出區別
+            if SIDE is not None:
+                FLAG = True
 
-            remove_and_drop()
+                if SIDE == "left" or SIDE == "right":
+                    move_left_or_right(SIDE)
 
-            for block in block_list:
-                draw_blocks(block)
+                elif SIDE == "down":
 
-            ######### 輸了也需要顯示畫面
-    pygame.display.flip()
+                    SIDE = move_down()
+
+                elif SIDE == "rotate clockwise":
+                    rotate = Rotate(temp_list)
+                    temp_list = rotate.clockwise()
+
+                elif SIDE == "rotate counterclockwise":
+                    rotate = Rotate(temp_list)
+                    temp_list = rotate.counterclockwise()
+
+            else:
+                FLAG = False
+
+            ######### 這裡不加else:FLAG = False，因為在大部分情況下，上面的就顯示FLAG = False，所以下面有需要才會是FLAG = True
+
+            if TIME % 60 == 0:
+                move_down()
+                FLAG = True
+
+            ######### 用FLAG來確認是否要更新畫面
+            if FLAG:
+                background_image = pygame.image.load(
+                    "/Users/coolguy/Documents/background.jpeg"
+                )
+                background.blit(background_image, (0, 0))  # 畫背景 黑色
+                draw_lines()  # 畫分隔的實線
+
+                """
+                因為temp_list裡有數個值
+                一個一個畫完後再更新畫面
+                """
+                for temp in temp_list:
+                    draw_blocks(temp)
+
+                remove_and_drop()
+
+                for block in block_list:
+                    draw_blocks(block)
+
+                ######### 輸了也需要顯示畫面
+        pygame.display.flip()
+
+if __name__ == "__main__":
+    asyncio.run(main())
