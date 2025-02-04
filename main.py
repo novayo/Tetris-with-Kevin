@@ -100,7 +100,7 @@ class TBlock(InitializeData):
         同上
         """
         color = self.color_or_picture(
-            (100, 90, 200), "/Users/coolguy/Documents/picture_for_T.jpg"
+            (100, 90, 200), "./src/picture_for_T.jpg"
         )
 
         return color
@@ -146,7 +146,7 @@ class LBlock(InitializeData):
         同上
         """
         color = self.color_or_picture(
-            (70, 90, 120), "/Users/coolguy/Documents/picture_for_L.jpg"
+            (70, 90, 120), "./src/picture_for_L.jpg"
         )
 
         return color
@@ -194,7 +194,7 @@ class JBlock(InitializeData):
         同上
         """
         color = self.color_or_picture(
-            (20, 90, 90), "/Users/coolguy/Documents/租房照片二.jpg"
+            (20, 90, 90), "./src/租房照片二.jpg"
         )
 
         return color
@@ -232,7 +232,7 @@ class IBlock(InitializeData):
         同上
         """
         color = self.color_or_picture(
-            (70, 90, 120), "/Users/coolguy/Documents/租房照片一.jpg"
+            (70, 90, 120), "./src/租房照片一.jpg"
         )
 
         return color
@@ -264,7 +264,7 @@ class OBlock(InitializeData):
         同上
         """
         color = self.color_or_picture(
-            (170, 90, 220), "/Users/coolguy/Documents/租房照片四.jpg"
+            (170, 90, 220), "./src/租房照片四.jpg"
         )
 
         return color
@@ -301,7 +301,7 @@ class SBlock(InitializeData):
         同上
         """
         color = self.color_or_picture(
-            (70, 90, 120), "/Users/coolguy/Documents/租房照片五.jpg"
+            (70, 90, 120), "./src/租房照片五.jpg"
         )
 
         return color
@@ -338,7 +338,7 @@ class ZBlock(InitializeData):
         同上
         """
         color = self.color_or_picture(
-            (20, 220, 120), "/Users/coolguy/Documents/租房照片二.jpg"
+            (20, 220, 120), "./src/租房照片二.jpg"
         )
 
         return color
@@ -351,7 +351,7 @@ class ZBlock(InitializeData):
 
         elif num == 2:
 
-            color = pygame.image.load("/Users/coolguy/Documents/租房照片二.jpg")
+            color = pygame.image.load("./src/租房照片二.jpg")
             color = pygame.transform.scale(color, (40, 40))
             color.blit(color, (self.x, self.y))
 
@@ -911,7 +911,7 @@ async def main():
             ######### 用FLAG來確認是否要更新畫面
             if FLAG:
                 background_image = pygame.image.load(
-                    "/Users/coolguy/Documents/background.jpeg"
+                    "./src/background.jpeg"
                 )
                 background.blit(background_image, (0, 0))  # 畫背景 黑色
                 draw_lines()  # 畫分隔的實線
