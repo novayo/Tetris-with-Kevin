@@ -852,7 +852,7 @@ fps_speed = 100
 score = 0
 
 async def main():
-    global TIME
+    global TIME, temp_list, fps_speed
 
     while True:
 
