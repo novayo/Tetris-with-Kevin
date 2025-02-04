@@ -930,6 +930,7 @@ async def main():
 
                 ######### 輸了也需要顯示畫面
         pygame.display.flip()
+        await asyncio.sleep(0)
 
 if __name__ == "__main__":
     asyncio.run(main())
